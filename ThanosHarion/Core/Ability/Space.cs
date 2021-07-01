@@ -1,6 +1,6 @@
 ﻿using Harion.Utility.Utils;
 using Harion.Cooldown;
-using SuperJesterRoles = ThanosHarion.Thanos;
+using ThanosRoles = ThanosHarion.Thanos;
 
 namespace ThanosHarion {
 
@@ -11,10 +11,10 @@ namespace ThanosHarion {
             Timer = 10f;
             MaxTimer = 10f;
             UseNumber = 4;
-            Roles = SuperJesterRoles.Instance;
-            SetSprite("ThanosHarion.Resources.Example.png", 125);
+            Roles = ThanosRoles.Instance;
+            SetSprite("ThanosHarion.Resources.space.png", 300);
             DecreamteUseNimber = UseNumberDecremantion.OnClick;
-            Key = SuperJesterRoles.KeyBindExample.Key;
+            Key = ThanosRoles.KeyBindSpace.Key;
         }
 
         public override void OnClick() => VentUtils.PlaceVent(PlayerControl.LocalPlayer.transform.position);
