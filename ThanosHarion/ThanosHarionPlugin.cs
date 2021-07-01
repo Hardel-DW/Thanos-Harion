@@ -10,8 +10,8 @@ namespace ThanosHarion {
     [BepInPlugin(Id)]
     [BepInProcess("Among Us.exe")]
     [BepInDependency(HarionPlugin.Id)]
-    public class TemplatePlugin : BasePlugin {
-        public const string Id = "me.change.please";
+    public class ThanosHarionPlugin : BasePlugin {
+        public const string Id = "fr.hardel.thanos";
         public static ManualLogSource Logger;
 
         public Harmony Harmony { get; } = new Harmony(Id);

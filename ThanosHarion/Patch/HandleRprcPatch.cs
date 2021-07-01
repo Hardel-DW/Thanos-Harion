@@ -7,7 +7,7 @@ namespace ThanosHarion.Patch {
 
         public static bool Prefix([HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader) {
             if (callId == (byte) CustomRPC.TestRpc) {
-                TemplatePlugin.Logger.LogInfo("Hello World");
+                ThanosHarionPlugin.Logger.LogInfo("Hello World");
 
                 return false;
             }

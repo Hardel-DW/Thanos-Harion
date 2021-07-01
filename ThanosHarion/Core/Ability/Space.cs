@@ -1,6 +1,6 @@
 ﻿using Harion.Utility.Utils;
 using Harion.Cooldown;
-using SuperJesterRoles = ThanosHarion.SuperJester;
+using SuperJesterRoles = ThanosHarion.Thanos;
 
 namespace ThanosHarion {
 
