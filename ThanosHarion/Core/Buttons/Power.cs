@@ -7,6 +7,8 @@ namespace ThanosHarion.Core.Buttons {
     [RegisterCooldownButton]
     public class PowerButton : CustomButton<PowerButton> {
 
+        public bool HasStone = false;
+
         public override void OnCreateButton() {
             Timer = ThanosRoles.CooldownPowerStone.GetValue();
             MaxTimer = ThanosRoles.CooldownPowerStone.GetValue();
@@ -14,6 +16,11 @@ namespace ThanosHarion.Core.Buttons {
             SetSprite("ThanosHarion.Resources.power.png", 300);
             Key = ThanosRoles.KeyBindPower.Key;
             PositionOffset = new UnityEngine.Vector2(1f, 1f);
+        }
+
+        public override void OnUpdate() {
+            if (!HasStone)
+                CanUse = false;
         }
 
         public override void OnClick() => PlayerControlUtils.KillPlayerArea(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer, 1f);

@@ -6,6 +6,9 @@ namespace ThanosHarion.Core.Buttons {
 
     [RegisterCooldownButton]
     public class TimeButton : CustomButton<TimeButton> {
+
+        public bool HasStone = false;
+
         public override void OnCreateButton() {
             Timer = ThanosRoles.CooldownTimeStone.GetValue();
             Roles = ThanosRoles.Instance;
@@ -26,6 +29,9 @@ namespace ThanosHarion.Core.Buttons {
                     TimeCore.Rewind();
             else
                 TimeCore.Record();
+
+            if (!HasStone)
+                CanUse = false;
         }
     }
 }

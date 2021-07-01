@@ -8,6 +8,8 @@ namespace ThanosHarion.Core.Buttons {
     [RegisterCooldownButton]
     public class MindButton : CustomButton<MindButton> {
 
+        public bool HasStone = false;
+
         public override void OnCreateButton() {
             Timer = ThanosRoles.CooldownMindStone.GetValue();
             MaxTimer = ThanosRoles.CooldownMindStone.GetValue();
@@ -29,6 +31,11 @@ namespace ThanosHarion.Core.Buttons {
         }
 
         public override void OnEffectEnd() => Morphing.Unmorph(PlayerControl.LocalPlayer, true);
+
+        public override void OnUpdate() { 
+            if (!HasStone)
+                CanUse = false;
+        }
 
         private void OnPlayerChoose(PlayerControl Player) {
             Morphing.Morph(PlayerControl.LocalPlayer, Player, true);

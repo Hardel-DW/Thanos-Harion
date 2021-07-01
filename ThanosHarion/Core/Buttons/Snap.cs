@@ -37,6 +37,9 @@ namespace ThanosHarion.Core.Buttons {
 
             if (SnapUsed && DestroyableSingleton<HudManager>.Instance.FullScreen.color.a >= 1)
                 SnapEnd();
+
+            if (!MindButton.Instance.HasStone || !PowerButton.Instance.HasStone || !SpaceButton.Instance.HasStone || !SoulButton.Instance.HasStone || !TimeButton.Instance.HasStone || !RealityButton.Instance.HasStone)
+                CanUse = false;
         }
 
         private void Increment() {

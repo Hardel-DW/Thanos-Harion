@@ -5,6 +5,8 @@ namespace ThanosHarion.Core.Buttons {
     [RegisterCooldownButton]
     public class SoulButton : CustomButton<SoulButton> {
 
+        public bool HasStone = false;
+
         public override void OnCreateButton() {
             Timer = 1f;
             MaxTimer = 1f;
@@ -12,6 +14,11 @@ namespace ThanosHarion.Core.Buttons {
             SetSprite("ThanosHarion.Resources.soul.png", 300);
             Key = ThanosRoles.KeyBindSoul.Key;
             PositionOffset = new UnityEngine.Vector2(0f, 0f);
+        }
+
+        public override void OnUpdate() {
+            if (!HasStone)
+                CanUse = false;
         }
     }
 }

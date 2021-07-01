@@ -6,6 +6,9 @@ using ThanosRoles = ThanosHarion.Core.Roles.Thanos;
 namespace ThanosHarion.Core.Buttons {
     [RegisterCooldownButton]
     public class RealityButton : CustomButton<RealityButton> {
+
+        public bool HasStone = false;
+
         public override void OnCreateButton() {
             Timer = ThanosRoles.CooldownRealityStone.GetValue();
             MaxTimer = ThanosRoles.CooldownRealityStone.GetValue();
@@ -15,6 +18,11 @@ namespace ThanosHarion.Core.Buttons {
             SetSprite("ThanosHarion.Resources.reality.png", 300);
             Key = ThanosRoles.KeyBindReality.Key;
             PositionOffset = new UnityEngine.Vector2(1f, 0f);
+        }
+
+        public override void OnUpdate() {
+            if (!HasStone)
+                CanUse = false;
         }
 
         public override void OnClick() => Invisbility.LaunchInvisibility(PlayerControl.LocalPlayer, ThanosRoles.DurationRealityStone.GetValue(), PlayerControlUtils.GetImpostors());

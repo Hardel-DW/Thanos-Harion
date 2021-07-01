@@ -7,6 +7,8 @@ namespace ThanosHarion.Core.Buttons {
     [RegisterCooldownButton]
     public class SpaceButton : CustomButton<SpaceButton> {
 
+        public bool HasStone = false;
+
         public override void OnCreateButton() {
             Timer = ThanosRoles.CooldownSpaceStone.GetValue();
             MaxTimer = ThanosRoles.CooldownSpaceStone.GetValue();
@@ -19,5 +21,10 @@ namespace ThanosHarion.Core.Buttons {
         }
 
         public override void OnClick() => VentUtils.PlaceVent(PlayerControl.LocalPlayer.transform.position);
+
+        public override void OnUpdate() {
+            if (!HasStone)
+                CanUse = false;
+        }
     }
 }

@@ -6,11 +6,8 @@ using Harion.CustomRoles.Abilities.UsableVent;
 using Harion.Enumerations;
 using System.Collections.Generic;
 using UnityEngine;
-using RealityButton = ThanosHarion.Core.Buttons.RealityButton;
-using PowerButton = ThanosHarion.Core.Buttons.PowerButton;
-using SpaceButton = ThanosHarion.Core.Buttons.SpaceButton;
-using MindButton = ThanosHarion.Core.Buttons.MindButton;
-using TimeButton = ThanosHarion.Core.Buttons.TimeButton;
+using ThanosHarion.Core.Buttons;
+using ThanosHarion.Core.System;
 using TimeCore = ThanosHarion.Core.System.Time.Time;
 
 namespace ThanosHarion.Core.Roles {
@@ -89,6 +86,10 @@ namespace ThanosHarion.Core.Roles {
 
             RealityButton.Instance.MaxTimer = CooldownRealityStone.GetValue();
             RealityButton.Instance.EffectDuration = DurationRealityStone.GetValue();
+
+            ResetStonePoessession();
+            if (AmongUsClient.Instance.AmHost)
+                SpawnStone.InitStone();
         }
 
         public override void OnMeetingStart(MeetingHud instance) {
@@ -113,6 +114,15 @@ namespace ThanosHarion.Core.Roles {
             CooldownMindStone.ValueStringFormat = (option, value) => $"{value}s";
             CooldownSoulStone.ValueStringFormat = (option, value) => $"{value}s";
             CooldownPowerStone.ValueStringFormat = (option, value) => $"{value}s";
+        }
+
+        private void ResetStonePoessession() {
+            MindButton.Instance.HasStone = false;
+            RealityButton.Instance.HasStone = false;
+            PowerButton.Instance.HasStone = false;
+            SpaceButton.Instance.HasStone = false;
+            TimeButton.Instance.HasStone = false;
+            SoulButton.Instance.HasStone = false;
         }
     }
 }
