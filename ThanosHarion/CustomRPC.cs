@@ -1,5 +1,5 @@
 ﻿namespace ThanosHarion {
     public enum CustomRPC {
-        TestRpc = 50
+        TimeRewind = 51
     }
 }

@@ -6,8 +6,10 @@ using Harion.CustomRoles.Abilities.UsableVent;
 using Harion.Enumerations;
 using System.Collections.Generic;
 using UnityEngine;
+using TimeButton = ThanosHarion.Core.Buttons.TimeButton;
+using TimeCore = ThanosHarion.Core.System.Time.Time;
 
-namespace ThanosHarion {
+namespace ThanosHarion.Core.Roles {
 
     [RegisterInCustomRoles(typeof(Thanos))]
     public class Thanos : CustomRole<Thanos> {
@@ -33,7 +35,9 @@ namespace ThanosHarion {
         public static CustomNumberOption DurationRealityStone = CustomOption.AddNumber("Duration Reality Stone", 5f, 5f, 60f, 2.5f, GenericGameOption.RealityStoneHolder);
         public static CustomNumberOption DurationMindStone = CustomOption.AddNumber("Duration Mind Stone", 5f, 5f, 60f, 2.5f, GenericGameOption.MindStoneHolder);
         public static CustomNumberOption MaxPortal = CustomOption.AddNumber("Max Portal", 4f, 1f, 10f, 1f, GenericGameOption.SpaceStoneHolder);
-        
+        public static CustomToggleOption EnableReviveTime = CustomOption.AddToggle("Enable Rivive during rewind", false, GenericGameOption.TimeStoneHolder);
+        public static CustomToggleOption UsableVitals = CustomOption.AddToggle("Thanos can use vitals", true, GenericGameOption.TimeStoneHolder);
+
         public static CustomKeyBind KeyBindTime = CustomKeyBind.AddCustomKeyBind(KeyCode.Alpha1, "Time", "Thanos");
         public static CustomKeyBind KeyBindReality = CustomKeyBind.AddCustomKeyBind(KeyCode.Alpha2, "Reality", "Thanos");
         public static CustomKeyBind KeyBindSpace = CustomKeyBind.AddCustomKeyBind(KeyCode.Alpha3, "Space", "Thanos");
@@ -63,6 +67,22 @@ namespace ThanosHarion {
         public override void OnInfectedStart() {
             PercentApparition = (int) ThanosPercent.GetValue();
             NumberPlayers = (int) NumberThanos.GetValue();
+        }
+
+        public override void OnGameStarted() {
+            TimeCore.recordTime = DurationTimeStone.GetValue() * 2;
+            TimeButton.Instance.EffectDuration = DurationTimeStone.GetValue() / 2;
+            TimeButton.Instance.MaxTimer = CooldownTimeStone.GetValue();
+            TimeButton.Instance.UseNumber = 4;
+            TimeCore.ClearGameHistory();
+        }
+
+        public override void OnMeetingStart(MeetingHud instance) {
+            TimeCore.StopRewind();
+        }
+
+        public override void OnGameEnded() {
+            TimeCore.ClearGameHistory();
         }
 
         private void GameOptionFormat() {

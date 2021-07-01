@@ -1,15 +1,15 @@
 ﻿using Harion.Utility.Utils;
 using Harion.Cooldown;
-using ThanosRoles = ThanosHarion.Thanos;
+using ThanosRoles = ThanosHarion.Core.Roles.Thanos;
 
-namespace ThanosHarion {
+namespace ThanosHarion.Core.Buttons {
 
     [RegisterCooldownButton]
-    public class Button : CustomButton<Button> {
+    public class SpaceButton : CustomButton<SpaceButton> {
 
         public override void OnCreateButton() {
-            Timer = 10f;
-            MaxTimer = 10f;
+            Timer = ThanosRoles.CooldownSpaceStone.GetValue();
+            MaxTimer = ThanosRoles.CooldownSpaceStone.GetValue();
             UseNumber = 4;
             Roles = ThanosRoles.Instance;
             SetSprite("ThanosHarion.Resources.space.png", 300);
