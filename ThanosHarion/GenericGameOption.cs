@@ -10,6 +10,7 @@ namespace ThanosHarion {
         public static CustomOptionHolder MindStoneHolder = CustomOption.AddHolder("<b><color=#5C3090FF>Mind Stone Option :</color></b>", true, true, false, ThanosHolder);
         public static CustomOptionHolder SoulStoneHolder = CustomOption.AddHolder("<b><color=#5C3090FF>Soul Stone Option :</color></b>", true, true, false, ThanosHolder);
         public static CustomOptionHolder PowerStoneHolder = CustomOption.AddHolder("<b><color=#5C3090FF>Power Stone Option :</color></b>", true, true, false, ThanosHolder);
+        public static CustomOptionHolder SnapHolder = CustomOption.AddHolder("<b><color=#5C3090FF>Snap Option :</color></b>", true, true, false, ThanosHolder);
 
         public static void GameOptionConfiguration() {
             ThanosHolder.HudStringFormat = (option, name, value) => $"\n{name}";

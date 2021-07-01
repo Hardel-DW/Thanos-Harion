@@ -41,6 +41,7 @@ namespace ThanosHarion.Core.Roles {
         public static CustomNumberOption MaxPortal = CustomOption.AddNumber("Max Portal", 4f, 1f, 10f, 1f, GenericGameOption.SpaceStoneHolder);
         public static CustomToggleOption EnableReviveTime = CustomOption.AddToggle("Enable Rivive during rewind", false, GenericGameOption.TimeStoneHolder);
         public static CustomToggleOption UsableVitals = CustomOption.AddToggle("Thanos can use vitals", true, GenericGameOption.TimeStoneHolder);
+        public static CustomToggleOption EnableSnap = CustomOption.AddToggle("Enable Snap Ability", true, GenericGameOption.SnapHolder);
 
         public static CustomKeyBind KeyBindTime = CustomKeyBind.AddCustomKeyBind(KeyCode.Alpha1, "Time", "Thanos");
         public static CustomKeyBind KeyBindReality = CustomKeyBind.AddCustomKeyBind(KeyCode.Alpha2, "Reality", "Thanos");

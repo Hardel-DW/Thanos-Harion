@@ -4,6 +4,7 @@ using Hazel;
 using System.Linq;
 using UnityEngine;
 using TimeCore = ThanosHarion.Core.System.Time.Time;
+using SnapButton = ThanosHarion.Core.Buttons.SnapButton;
 
 namespace ThanosHarion.Patch {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
@@ -25,6 +26,13 @@ namespace ThanosHarion.Patch {
 
                 if (body != null)
                     Object.Destroy(body.gameObject);
+
+                return false;
+            }
+
+            if (callId == (byte) CustomRPC.Snap) {
+                PlayerControl player = PlayerControlUtils.FromPlayerId(reader.ReadByte());
+                SnapButton.Instance.StartSnap();
 
                 return false;
             }
