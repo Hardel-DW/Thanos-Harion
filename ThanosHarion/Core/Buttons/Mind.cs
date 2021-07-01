@@ -1,0 +1,37 @@
+﻿using Harion.Utility.Utils;
+using Harion.Cooldown;
+using ThanosRoles = ThanosHarion.Core.Roles.Thanos;
+using Harion.Utility;
+using System.Collections.Generic;
+using Harion.Utility.Ability;
+
+namespace ThanosHarion.Core.Buttons {
+    [RegisterCooldownButton]
+    public class MindButton : CustomButton<MindButton> {
+
+        public override void OnCreateButton() {
+            Timer = ThanosRoles.CooldownMindStone.GetValue();
+            MaxTimer = ThanosRoles.CooldownMindStone.GetValue();
+            EffectDuration = ThanosRoles.DurationMindStone.GetValue();
+            HasEffectDuration = true;
+            Roles = ThanosRoles.Instance;
+            SetSprite("ThanosHarion.Resources.mind.png", 300);
+            Key = ThanosRoles.KeyBindMind.Key;
+        }
+
+        public override void OnClick() {
+            PlayerButton.InitPlayerButton(
+                false,
+                new List<PlayerControl> { PlayerControl.LocalPlayer },
+                (Player) => OnPlayerChoose(Player),
+                () => PlayerButton.StopPlayerSelection()
+            );
+        }
+
+        public override void OnEffectEnd() => Morphing.Unmorph(PlayerControl.LocalPlayer, true);
+
+        private void OnPlayerChoose(PlayerControl Player) {
+            Morphing.Morph(PlayerControl.LocalPlayer, Player, true);
+        }
+    }
+}
