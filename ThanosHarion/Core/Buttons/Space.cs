@@ -15,6 +15,7 @@ namespace ThanosHarion.Core.Buttons {
             SetSprite("ThanosHarion.Resources.space.png", 300);
             DecreamteUseNimber = UseNumberDecremantion.OnClick;
             Key = ThanosRoles.KeyBindSpace.Key;
+            PositionOffset = new UnityEngine.Vector2(0f, 1f);
         }
 
         public override void OnClick() => VentUtils.PlaceVent(PlayerControl.LocalPlayer.transform.position);

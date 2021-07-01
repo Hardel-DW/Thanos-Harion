@@ -16,6 +16,7 @@ namespace ThanosHarion.Core.Buttons {
             Roles = ThanosRoles.Instance;
             SetSprite("ThanosHarion.Resources.mind.png", 300);
             Key = ThanosRoles.KeyBindMind.Key;
+            PositionOffset = new UnityEngine.Vector2(1f, 2f);
         }
 
         public override void OnClick() {

@@ -13,6 +13,7 @@ namespace ThanosHarion.Core.Buttons {
             Roles = ThanosRoles.Instance;
             SetSprite("ThanosHarion.Resources.power.png", 300);
             Key = ThanosRoles.KeyBindPower.Key;
+            PositionOffset = new UnityEngine.Vector2(1f, 1f);
         }
 
         public override void OnClick() => PlayerControlUtils.KillPlayerArea(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer, 1f);

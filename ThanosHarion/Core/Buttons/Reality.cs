@@ -14,6 +14,7 @@ namespace ThanosHarion.Core.Buttons {
             Roles = ThanosRoles.Instance;
             SetSprite("ThanosHarion.Resources.reality.png", 300);
             Key = ThanosRoles.KeyBindReality.Key;
+            PositionOffset = new UnityEngine.Vector2(1f, 0f);
         }
 
         public override void OnClick() => Invisbility.LaunchInvisibility(PlayerControl.LocalPlayer, ThanosRoles.DurationRealityStone.GetValue(), PlayerControlUtils.GetImpostors());

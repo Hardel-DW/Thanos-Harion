@@ -13,6 +13,7 @@ namespace ThanosHarion.Core.Buttons {
             HasEffectDuration = true;
             SetSprite("ThanosHarion.Resources.time.png", 300);
             Key = ThanosRoles.KeyBindTime.Key;
+            PositionOffset = new UnityEngine.Vector2(0f, 2f);
         }
 
         public override void OnClick() => TimeCore.StartRewind();
