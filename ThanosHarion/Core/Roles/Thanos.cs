@@ -6,6 +6,7 @@ using Harion.CustomRoles.Abilities.UsableVent;
 using Harion.Enumerations;
 using System.Collections.Generic;
 using UnityEngine;
+using RealityButton = ThanosHarion.Core.Buttons.RealityButton;
 using PowerButton = ThanosHarion.Core.Buttons.PowerButton;
 using SpaceButton = ThanosHarion.Core.Buttons.SpaceButton;
 using MindButton = ThanosHarion.Core.Buttons.MindButton;
@@ -84,6 +85,9 @@ namespace ThanosHarion.Core.Roles {
 
             SpaceButton.Instance.MaxTimer = CooldownSpaceStone.GetValue();
             PowerButton.Instance.MaxTimer = CooldownPowerStone.GetValue();
+
+            RealityButton.Instance.MaxTimer = CooldownRealityStone.GetValue();
+            RealityButton.Instance.EffectDuration = DurationRealityStone.GetValue();
         }
 
         public override void OnMeetingStart(MeetingHud instance) {
