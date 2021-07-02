@@ -7,13 +7,12 @@ using Harion.Enumerations;
 using System.Collections.Generic;
 using UnityEngine;
 using ThanosHarion.Core.Buttons;
-using ThanosHarion.Core.System;
 using TimeCore = ThanosHarion.Core.System.Time.Time;
 
 namespace ThanosHarion.Core.Roles {
 
     [RegisterInCustomRoles(typeof(Thanos))]
-    public class Thanos : CustomRole<Thanos> {
+    public partial class Thanos : CustomRole<Thanos> {
         // Color: #BD00AFFF
         public static CustomNumberOption ThanosPercent = CustomOption.AddNumber("Thanos ", "<color=#BD00AFFF>Thanos Apparition</color>", 0f, 0f, 100f, 5f, GenericGameOption.ThanosHolder);
         public static CustomNumberOption NumberThanos = CustomOption.AddNumber("Number Thanos", 1f, 1f, 10f, 1f, GenericGameOption.ThanosHolder);
@@ -89,7 +88,7 @@ namespace ThanosHarion.Core.Roles {
 
             ResetStonePoessession();
             if (AmongUsClient.Instance.AmHost)
-                SpawnStone.InitStone();
+                InitStone();
         }
 
         public override void OnMeetingStart(MeetingHud instance) {
@@ -114,15 +113,6 @@ namespace ThanosHarion.Core.Roles {
             CooldownMindStone.ValueStringFormat = (option, value) => $"{value}s";
             CooldownSoulStone.ValueStringFormat = (option, value) => $"{value}s";
             CooldownPowerStone.ValueStringFormat = (option, value) => $"{value}s";
-        }
-
-        private void ResetStonePoessession() {
-            MindButton.Instance.HasStone = false;
-            RealityButton.Instance.HasStone = false;
-            PowerButton.Instance.HasStone = false;
-            SpaceButton.Instance.HasStone = false;
-            TimeButton.Instance.HasStone = false;
-            SoulButton.Instance.HasStone = false;
         }
     }
 }
