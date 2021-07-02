@@ -6,12 +6,13 @@ using Harion.Utility.Utils;
 using Harion.Utility.Helper;
 using System.Linq;
 using Random = System.Random;
+using UnityEngine.AI;
 
 namespace ThanosHarion.Core.Roles {
     public partial class Thanos {
 
         private static Random random = new Random();
-        public List<GameObject> Stones { get; set; } = new();
+        public Dictionary<GameObject, PlainShipRoom> Stones { get; set; } = new();
 
         public void InitStone() {
             Stones = new();
@@ -46,8 +47,7 @@ namespace ThanosHarion.Core.Roles {
             GameObject Stone = ModelStone("Reality", sprite);
             PickupObject pickup = Stone.GetComponent<PickupObject>();
             pickup.OnPickup = () => RealityButton.Instance.HasStone = true;
-            Stone.transform.localPosition = (Vector3) GetRandomPosition();
-            Stones.Add(Stone);
+            SetRandomPosition(Stone);
         }
 
         private void PlaceMindStone() {
@@ -55,8 +55,7 @@ namespace ThanosHarion.Core.Roles {
             GameObject Stone = ModelStone("Mind", sprite);
             PickupObject pickup = Stone.GetComponent<PickupObject>();
             pickup.OnPickup = () => MindButton.Instance.HasStone = true;
-            Stone.transform.localPosition = (Vector3) GetRandomPosition();
-            Stones.Add(Stone);
+            SetRandomPosition(Stone);
         }
 
         private void PlaceSpaceStone() {
@@ -64,8 +63,7 @@ namespace ThanosHarion.Core.Roles {
             GameObject Stone = ModelStone("Space", sprite);
             PickupObject pickup = Stone.GetComponent<PickupObject>();
             pickup.OnPickup = () => SpaceButton.Instance.HasStone = true;
-            Stone.transform.localPosition = (Vector3) GetRandomPosition();
-            Stones.Add(Stone);
+            SetRandomPosition(Stone);
         }
 
         private void PlaceTimeStone() {
@@ -73,8 +71,7 @@ namespace ThanosHarion.Core.Roles {
             GameObject Stone = ModelStone("Time", sprite);
             PickupObject pickup = Stone.GetComponent<PickupObject>();
             pickup.OnPickup = () => TimeButton.Instance.HasStone = true;
-            Stone.transform.localPosition = (Vector3) GetRandomPosition();
-            Stones.Add(Stone);
+            SetRandomPosition(Stone);
         }
 
         private void PlacePowerStone() {
@@ -82,8 +79,7 @@ namespace ThanosHarion.Core.Roles {
             GameObject Stone = ModelStone("Power", sprite);
             PickupObject pickup = Stone.GetComponent<PickupObject>();
             pickup.OnPickup = () => PowerButton.Instance.HasStone = true;
-            Stone.transform.localPosition = (Vector3) GetRandomPosition();
-            Stones.Add(Stone);
+            SetRandomPosition(Stone);
         }
 
         private void PlaceSoulStone() {
@@ -92,8 +88,7 @@ namespace ThanosHarion.Core.Roles {
             PickupObject pickup = Stone.GetComponent<PickupObject>();
             pickup.OnPickup = () => SoulButton.Instance.HasStone = true;
             pickup.PlayersCanPickup = PlayerControl.AllPlayerControls.ToArray().ToList();
-            Stone.transform.localPosition = (Vector3) GetRandomPosition();
-            Stones.Add(Stone);
+            SetRandomPosition(Stone);
         }
 
         private void ResetStonePoessession() {
@@ -105,11 +100,10 @@ namespace ThanosHarion.Core.Roles {
             SoulButton.Instance.HasStone = false;
         }
 
-        private Vector2? GetRandomPosition() {
-            List<PlainShipRoom> Rooms = ShipStatus.Instance.AllRooms.ToArray().ToList();
+        private void SetRandomPosition(GameObject Stone) {
+            List<PlainShipRoom> Rooms = ShipStatus.Instance.AllRooms.ToArray().ToList().Where(value => !Stones.ContainsValue(value)).ToArray().ToList();
             int maxTurn = 0;
             bool CorrectPositon = false;
-            Vector2? ValueReturn = null;
 
             do {
                 maxTurn++;
@@ -119,15 +113,29 @@ namespace ThanosHarion.Core.Roles {
                 if (!InRoom)
                     continue;
 
-                UnhollowerBaseLib.Il2CppReferenceArray<Collider2D> Collider = Physics2D.OverlapAreaAll(RandomPositionInRoom += Vector2.one, RandomPositionInRoom -= Vector2.one);
-                if (Collider.Count > 0)
+                GameObject ground = null;
+                UnhollowerBaseLib.Il2CppReferenceArray<Collider2D> GameObjects = Physics2D.OverlapCircleAll(RandomPositionInRoom, 0.1f);
+                if (GameObjects.ToArray().ToList().Count > 0) {
+                    foreach (var collider in GameObjects) {
+                        GameObject go = collider.gameObject;
+                        if (go.name == "Ground") {
+                            ground = go;
+                            break;
+                        }
+                    }
+                }
+
+                if (ground == null)
                     continue;
 
-                ValueReturn = RandomPositionInRoom;
-                CorrectPositon = true;
-            } while (maxTurn < 100 && CorrectPositon == false);
+                if (!room.roomArea.bounds.Contains(RandomPositionInRoom))
+                    continue;
 
-            return ValueReturn;
+                CorrectPositon = true;
+                Stone.transform.localPosition = RandomPositionInRoom;
+                Stones.Add(Stone, room);
+                ThanosHarionPlugin.Logger.LogInfo($"maxTurn: {maxTurn}, {RandomPositionInRoom.x} {RandomPositionInRoom.y}, {CorrectPositon}, {room.transform.parent.name}");
+            } while (maxTurn < 10000 && CorrectPositon == false);
         }
     }
 }
