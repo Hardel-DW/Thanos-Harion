@@ -46,6 +46,7 @@ namespace ThanosHarion.Core.Roles {
             GameObject Stone = ModelStone("Reality", sprite);
             PickupObject pickup = Stone.GetComponent<PickupObject>();
             pickup.OnPickup = () => RealityButton.Instance.HasStone = true;
+            Stone.transform.localPosition = (Vector3) GetRandomPosition();
             Stones.Add(Stone);
         }
 
@@ -54,6 +55,7 @@ namespace ThanosHarion.Core.Roles {
             GameObject Stone = ModelStone("Mind", sprite);
             PickupObject pickup = Stone.GetComponent<PickupObject>();
             pickup.OnPickup = () => MindButton.Instance.HasStone = true;
+            Stone.transform.localPosition = (Vector3) GetRandomPosition();
             Stones.Add(Stone);
         }
 
@@ -62,6 +64,7 @@ namespace ThanosHarion.Core.Roles {
             GameObject Stone = ModelStone("Space", sprite);
             PickupObject pickup = Stone.GetComponent<PickupObject>();
             pickup.OnPickup = () => SpaceButton.Instance.HasStone = true;
+            Stone.transform.localPosition = (Vector3) GetRandomPosition();
             Stones.Add(Stone);
         }
 
@@ -70,6 +73,7 @@ namespace ThanosHarion.Core.Roles {
             GameObject Stone = ModelStone("Time", sprite);
             PickupObject pickup = Stone.GetComponent<PickupObject>();
             pickup.OnPickup = () => TimeButton.Instance.HasStone = true;
+            Stone.transform.localPosition = (Vector3) GetRandomPosition();
             Stones.Add(Stone);
         }
 
@@ -78,6 +82,7 @@ namespace ThanosHarion.Core.Roles {
             GameObject Stone = ModelStone("Power", sprite);
             PickupObject pickup = Stone.GetComponent<PickupObject>();
             pickup.OnPickup = () => PowerButton.Instance.HasStone = true;
+            Stone.transform.localPosition = (Vector3) GetRandomPosition();
             Stones.Add(Stone);
         }
 
@@ -87,6 +92,7 @@ namespace ThanosHarion.Core.Roles {
             PickupObject pickup = Stone.GetComponent<PickupObject>();
             pickup.OnPickup = () => SoulButton.Instance.HasStone = true;
             pickup.PlayersCanPickup = PlayerControl.AllPlayerControls.ToArray().ToList();
+            Stone.transform.localPosition = (Vector3) GetRandomPosition();
             Stones.Add(Stone);
         }
 

@@ -14,7 +14,7 @@ namespace ThanosHarion.Core.Roles {
     [RegisterInCustomRoles(typeof(Thanos))]
     public partial class Thanos : CustomRole<Thanos> {
         // Color: #BD00AFFF
-        public static CustomNumberOption ThanosPercent = CustomOption.AddNumber("Thanos ", "<color=#BD00AFFF>Thanos Apparition</color>", 0f, 0f, 100f, 5f, GenericGameOption.ThanosHolder);
+        public static CustomNumberOption ThanosPercent = CustomOption.AddNumber("Thanos", "<color=#BD00AFFF>Thanos Apparition</color>", 0f, 0f, 100f, 5f, GenericGameOption.ThanosHolder);
         public static CustomNumberOption NumberThanos = CustomOption.AddNumber("Number Thanos", 1f, 1f, 10f, 1f, GenericGameOption.ThanosHolder);
 
         public static CustomNumberOption CooldownTimeStone = CustomOption.AddNumber("Cooldown Time Stone", 10f, 10f, 60f, 2.5f, GenericGameOption.TimeStoneHolder);
@@ -61,7 +61,7 @@ namespace ThanosHarion.Core.Roles {
             Color = new Color(0.741f, 0f, 0.686f, 1f);
             Name = "Thanos";
             IntroDescription = "Find the stones, and Challenge the crewmates";
-            TasksDescription = "<color=#FFFFFFFF>Objective: Find the stones to get the snap.</color>\n\n<color=#808080FF>Snap:</color> Ends the game.\n<color=#008516FF>Time stone:</color> Allows to go back in time.\n<color=#822FA8FF>Power Stone:</color> Allows you to kill in a zone.\n<color=#C46f1AFF>Soul Stone:</color> Crewmates can pick it up.\n<color=#A6A02EFF>Spirit Stone:</color> Allows you to transform into someone.\n<color=#3482BAFF>Space Stone:</color> Sets up portals.\n<color=#D43D3DFF>Reality Stone:</color> Allows you to make yourself invisible.";
+            TasksDescription = "<color=#FFFFFFFF>Objective: Find the stones to get the snap.\n<color=#808080FF>Snap:</color> Ends the game.\n<color=#008516FF>Time stone:</color> Allows to go back in time.\n<color=#822FA8FF>Power Stone:</color> Allows you to kill in a zone.\n<color=#C46f1AFF>Soul Stone:</color> Crewmates can pick it up.\n<color=#A6A02EFF>Spirit Stone:</color> Allows you to transform into someone.\n<color=#3482BAFF>Space Stone:</color> Sets up portals.\n<color=#D43D3DFF>Reality Stone:</color> Allows you to make yourself invisible.</color>";
             OutroDescription = "Thanos Win";
         }
 
