@@ -3,6 +3,7 @@ using BepInEx.IL2CPP;
 using BepInEx.Logging;
 using Harion;
 using Harion.Cooldown;
+using Harion.Reactor;
 using HarmonyLib;
 
 namespace ThanosHarion {
@@ -19,6 +20,7 @@ namespace ThanosHarion {
         public override void Load() {
             Logger = Log;
             Harmony.PatchAll();
+            RegisterInIl2CppAttribute.Register();
             RegisterCooldownButton.Register();
             ResourceLoader.LoadAssets();
             GenericGameOption.GameOptionConfiguration();

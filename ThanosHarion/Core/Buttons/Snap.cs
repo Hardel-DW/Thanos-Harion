@@ -48,7 +48,7 @@ namespace ThanosHarion.Core.Buttons {
 
             Color currentColor = DestroyableSingleton<HudManager>.Instance.FullScreen.color;
             DestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
-            DestroyableSingleton<HudManager>.Instance.FullScreen.color = new Color(1f, 1f, 1f, currentColor.a + 0.002f);
+            DestroyableSingleton<HudManager>.Instance.FullScreen.color = new Color(1f, 1f, 1f, currentColor.a + 0.0025f);
         }
 
         public void StartSnap() {

@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace ThanosHarion {
     public static class ResourceLoader {
-        private static readonly Assembly MyAssembly = Assembly.GetExecutingAssembly();
         public static Sprite RealityStoneSprite;
         public static Sprite SpaceStoneSprite;
         public static Sprite SoulStoneSprite;
@@ -16,8 +15,6 @@ namespace ThanosHarion {
         public static Sprite PortalSprite;
 
         public static void LoadAssets() {
-            /* Stream resourceSteam = MyAssembly.GetManifestResourceStream("ThanosHarion.Resources.myBundle");
-             AssetBundle assetBundle = AssetBundle.LoadFromMemory(resourceSteam.ReadFully)*/
             RealityStoneSprite = SpriteHelper.LoadSpriteFromEmbeddedResources("ThanosHarion.Resources.reality.png", 300f).DontDestroy();
             SpaceStoneSprite = SpriteHelper.LoadSpriteFromEmbeddedResources("ThanosHarion.Resources.space.png", 300f).DontDestroy();
             SoulStoneSprite = SpriteHelper.LoadSpriteFromEmbeddedResources("ThanosHarion.Resources.soul.png", 300f).DontDestroy();

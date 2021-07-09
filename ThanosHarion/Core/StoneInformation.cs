@@ -37,13 +37,7 @@ namespace ThanosHarion.Core {
             Name = name;
             Texture = texture;
             StonePickuBy = stonePickuBy;
-
-            OnPickup = (PlayerControl Player) => {
-                HasStone = true;
-
-                if (StoneObject != null)
-                    Object.Destroy(StoneObject);
-            };
+            OnPickup = (PlayerControl Player) => HasStone = true;
         }
 
         public GameObject CreateStone(int OwnerId, Vector2? Position = null) {    
@@ -59,6 +53,8 @@ namespace ThanosHarion.Core {
             renderer.sprite = Texture;
 
             PickupObject Pickup = Stone.AddComponent<PickupObject>();
+            Pickup.OnPickup = OnPickup;
+
             SyncroStone Syncro = Stone.AddComponent<SyncroStone>();
             Syncro.ObjectId = StoneType;
             Syncro.OwnerId = OwnerId;
