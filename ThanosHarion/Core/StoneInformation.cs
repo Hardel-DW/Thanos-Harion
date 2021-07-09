@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace ThanosHarion.Core {
     public class StoneInformation {
@@ -23,6 +24,8 @@ namespace ThanosHarion.Core {
         public readonly Sprite Texture;
         public readonly Action<PlayerControl> OnPickup;
 
+        public GameObject StoneObject { get; set; } = null;
+
         public bool IsActive { get; set; } = true;
 
         public StoneVisibility Visibility { get; set; }
@@ -34,7 +37,13 @@ namespace ThanosHarion.Core {
             Name = name;
             Texture = texture;
             StonePickuBy = stonePickuBy;
-            OnPickup = (PlayerControl Player) => HasStone = true;
+
+            OnPickup = (PlayerControl Player) => {
+                HasStone = true;
+
+                if (StoneObject != null)
+                    Object.Destroy(StoneObject);
+            };
         }
 
         public GameObject CreateStone(int OwnerId, Vector2? Position = null) {    
@@ -65,7 +74,14 @@ namespace ThanosHarion.Core {
 
         public static void ReadSyncroData(StoneData data, Vector3 Position, int OwnerId) {
             StoneInformation StoneInfo = GetStoneData(data);
-            StoneInfo.CreateStone(OwnerId, Position);
+            StoneInfo.StoneObject = StoneInfo.CreateStone(OwnerId, Position);
+        }
+
+        public static void ReadDestroyData(StoneData data) {
+            StoneInformation StoneInfo = GetStoneData(data);
+
+            if (StoneInfo.StoneObject != null)
+                Object.Destroy(StoneInfo.StoneObject);
         }
     }
 

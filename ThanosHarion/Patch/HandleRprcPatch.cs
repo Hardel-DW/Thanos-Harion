@@ -47,6 +47,13 @@ namespace ThanosHarion.Patch {
                 return false;
             }
 
+            if (callId == (byte) CustomRPC.SyncroDestroy) {
+                StoneData StoneData = (StoneData) reader.ReadByte();
+                
+                StoneInformation.ReadDestroyData(StoneData);
+                return false;
+            }
+
             return true;
         }
     }

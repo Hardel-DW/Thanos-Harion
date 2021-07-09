@@ -19,7 +19,7 @@ namespace ThanosHarion.Core {
 
         public void OnDestroy() {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte) CustomRPC.SyncroDestroy, SendOption.None, -1);
-
+            writer.Write((byte) ObjectId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
     }

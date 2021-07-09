@@ -16,14 +16,22 @@ namespace ThanosHarion.Core.Roles {
                     continue;
 
                 GameObject StoneObject = StoneData.CreateStone(AmongUsClient.Instance.ClientId);
-                SetRandomPosition(StoneObject);
+                StoneData.StoneObject = SetRandomPosition(StoneObject);
                 SendStone(StoneObject, StoneData);
             }
         }
 
         private void ResetStonePoessession() => StoneInformation.StonesData.ForEach(stone => stone.HasStone = false);
-        
-        private void SetRandomPosition(GameObject Stone) {
+
+        private void SendStone(GameObject StoneObject, StoneInformation Data) {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte) CustomRPC.SyncroStone, SendOption.None, -1);
+            writer.Write(AmongUsClient.Instance.ClientId);
+            writer.WriteVector3(StoneObject.transform.localPosition);
+            writer.Write((byte) Data.StoneType);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
+
+        private GameObject SetRandomPosition(GameObject Stone) {
             bool CorrectPositon = false;
 
             do {
@@ -39,14 +47,8 @@ namespace ThanosHarion.Core.Roles {
                 Stone.transform.localPosition = new Vector3(Position.position.x, Position.position.y);
                 Stones.Add(Stone, Position.room);
             } while (!CorrectPositon);
-        }
 
-        private void SendStone(GameObject StoneObject, StoneInformation Data) {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte) CustomRPC.SyncroStone, SendOption.None, -1);
-            writer.Write(AmongUsClient.Instance.ClientId);
-            writer.WriteVector3(StoneObject.transform.localPosition);
-            writer.Write((byte) Data.StoneType);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            return Stone;
         }
     }
 }
