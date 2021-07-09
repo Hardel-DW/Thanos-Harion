@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using TimeCore = ThanosHarion.Core.System.Time.Time;
 using SnapButton = ThanosHarion.Core.Buttons.SnapButton;
+using ThanosHarion.Core;
 
 namespace ThanosHarion.Patch {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
@@ -34,6 +35,15 @@ namespace ThanosHarion.Patch {
                 PlayerControl player = PlayerControlUtils.FromPlayerId(reader.ReadByte());
                 SnapButton.Instance.StartSnap();
 
+                return false;
+            }
+
+            if (callId == (byte) CustomRPC.SyncroStone) {
+                int ClientId = reader.ReadInt32();
+                Vector3 Position = reader.ReadVector3();
+                StoneData StoneData = (StoneData) reader.ReadByte();
+
+                StoneInformation.ReadSyncroData(StoneData, Position, ClientId);
                 return false;
             }
 

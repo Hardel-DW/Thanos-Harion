@@ -14,24 +14,13 @@ namespace ThanosHarion.Core {
             get => OwnerId == AmongUsClient.Instance.ClientId;
         }
 
-        public string ObjectId;
-        public SendOption sendMode = SendOption.None;
+        public StoneData ObjectId;
         public int OwnerId;
 
-        public void OnDisable() {
-
-        }
-
-        public void OnEnable() {
-
-        }
-
         public void OnDestroy() {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte) CustomRPC.SyncroDestroy, SendOption.None, -1);
 
-        }
-
-        public void PlaceStone(string name, Vector2 Position, int OwnerId, ) {
-
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
     }
 }

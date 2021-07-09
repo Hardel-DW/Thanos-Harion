@@ -4,7 +4,6 @@
         TimeRevive = 62,
         Snap = 63,
         SyncroStone,
-        SyncroDestroy,
-        SyncroEnableDisable
+        SyncroDestroy
     }
 }

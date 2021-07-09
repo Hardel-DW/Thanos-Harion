@@ -2,6 +2,7 @@
 using UnityEngine;
 using Harion.Utility.Utils;
 using System.Linq;
+using Hazel;
 
 namespace ThanosHarion.Core.Roles {
     public partial class Thanos {
@@ -14,7 +15,9 @@ namespace ThanosHarion.Core.Roles {
                 if (!StoneData.IsActive)
                     continue;
 
-                SetRandomPosition(StoneData.ModelTemplate(AmongUsClient.Instance.ClientId));
+                GameObject StoneObject = StoneData.CreateStone(AmongUsClient.Instance.ClientId);
+                SetRandomPosition(StoneObject);
+                SendStone(StoneObject, StoneData);
             }
         }
 
@@ -35,13 +38,15 @@ namespace ThanosHarion.Core.Roles {
                 CorrectPositon = true;
                 Stone.transform.localPosition = new Vector3(Position.position.x, Position.position.y);
                 Stones.Add(Stone, Position.room);
-                
-                SyncroStone(Stone);
             } while (!CorrectPositon);
         }
 
-        private void SyncroStone(GameObject Stone) {
-
+        private void SendStone(GameObject StoneObject, StoneInformation Data) {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte) CustomRPC.SyncroStone, SendOption.None, -1);
+            writer.Write(AmongUsClient.Instance.ClientId);
+            writer.WriteVector3(StoneObject.transform.localPosition);
+            writer.Write((byte) Data.StoneType);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
     }
 }

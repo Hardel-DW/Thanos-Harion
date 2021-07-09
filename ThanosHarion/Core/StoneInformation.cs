@@ -25,7 +25,7 @@ namespace ThanosHarion.Core {
 
         public bool IsActive { get; set; } = true;
 
-        public StoneVisibility visibility { get; set; }
+        public StoneVisibility Visibility { get; set; }
 
         public bool HasStone { get; set; } = false;
 
@@ -37,7 +37,7 @@ namespace ThanosHarion.Core {
             OnPickup = (PlayerControl Player) => HasStone = true;
         }
 
-        public GameObject ModelTemplate(int OwnerId, Vector2? Position = null) {    
+        public GameObject CreateStone(int OwnerId, Vector2? Position = null) {    
             Position ??= new Vector2(100f, 100f);
 
             GameObject Stone = new GameObject();
@@ -51,7 +51,7 @@ namespace ThanosHarion.Core {
 
             PickupObject Pickup = Stone.AddComponent<PickupObject>();
             SyncroStone Syncro = Stone.AddComponent<SyncroStone>();
-            Syncro.ObjectId = Name;
+            Syncro.ObjectId = StoneType;
             Syncro.OwnerId = OwnerId;
 
             BoxCollider2D collider = Stone.AddComponent<BoxCollider2D>();
@@ -62,9 +62,14 @@ namespace ThanosHarion.Core {
         }
         
         public static StoneInformation GetStoneData(StoneData Data) => StonesData.FirstOrDefault(stone => stone.StoneType == Data);
+
+        public static void ReadSyncroData(StoneData data, Vector3 Position, int OwnerId) {
+            StoneInformation StoneInfo = GetStoneData(data);
+            StoneInfo.CreateStone(OwnerId, Position);
+        }
     }
 
-    public enum StoneData {
+    public enum StoneData : byte {
         Reality,
         Space,
         Time,
