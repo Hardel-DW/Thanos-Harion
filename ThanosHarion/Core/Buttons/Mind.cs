@@ -8,15 +8,13 @@ namespace ThanosHarion.Core.Buttons {
     [RegisterCooldownButton]
     public class MindButton : CustomButton<MindButton> {
 
-        public bool HasStone = false;
-
         public override void OnCreateButton() {
             Timer = ThanosRoles.CooldownMindStone.GetValue();
             MaxTimer = ThanosRoles.CooldownMindStone.GetValue();
             EffectDuration = ThanosRoles.DurationMindStone.GetValue();
             HasEffectDuration = true;
             Roles = ThanosRoles.Instance;
-            SetSprite("ThanosHarion.Resources.mind.png", 300);
+            SetSprite(ResourceLoader.MindStoneSprite);
             Key = ThanosRoles.KeyBindMind.Key;
             PositionOffset = new UnityEngine.Vector2(1f, 2f);
         }
@@ -32,8 +30,9 @@ namespace ThanosHarion.Core.Buttons {
 
         public override void OnEffectEnd() => Morphing.Unmorph(PlayerControl.LocalPlayer, true);
 
-        public override void OnUpdate() { 
-            if (!HasStone)
+        public override void OnUpdate() {
+            StoneInformation MindStone = StoneInformation.GetStoneData(StoneData.Mind);
+            if (!MindStone.HasStone && MindStone.IsActive)
                 CanUse = false;
         }
 

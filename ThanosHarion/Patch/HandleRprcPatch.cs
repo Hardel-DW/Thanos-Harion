@@ -37,7 +37,7 @@ namespace ThanosHarion.Patch {
                 return false;
             }
 
-            return false;
+            return true;
         }
     }
 }

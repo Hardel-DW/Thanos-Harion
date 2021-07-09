@@ -7,21 +7,20 @@ namespace ThanosHarion.Core.Buttons {
     [RegisterCooldownButton]
     public class RealityButton : CustomButton<RealityButton> {
 
-        public bool HasStone = false;
-
         public override void OnCreateButton() {
             Timer = ThanosRoles.CooldownRealityStone.GetValue();
             MaxTimer = ThanosRoles.CooldownRealityStone.GetValue();
             EffectDuration = ThanosRoles.DurationRealityStone.GetValue();
             HasEffectDuration = true;
             Roles = ThanosRoles.Instance;
-            SetSprite("ThanosHarion.Resources.reality.png", 300);
+            SetSprite(ResourceLoader.RealityStoneSprite);
             Key = ThanosRoles.KeyBindReality.Key;
             PositionOffset = new UnityEngine.Vector2(1f, 0f);
         }
 
         public override void OnUpdate() {
-            if (!HasStone)
+            StoneInformation RealityStone = StoneInformation.GetStoneData(StoneData.Reality);
+            if (!RealityStone.HasStone && RealityStone.IsActive)
                 CanUse = false;
         }
 

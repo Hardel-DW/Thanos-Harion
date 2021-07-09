@@ -1,13 +1,13 @@
 ﻿using Harion.Cooldown;
 using Harion.Utility.Utils;
 using Hazel;
+using System.Linq;
 using UnityEngine;
 using ThanosRoles = ThanosHarion.Core.Roles.Thanos;
 
 namespace ThanosHarion.Core.Buttons {
     [RegisterCooldownButton]
     public class SnapButton : CustomButton<SnapButton> {
-
         private bool SnapUsed = false;
 
         public override void OnCreateButton() {
@@ -16,9 +16,9 @@ namespace ThanosHarion.Core.Buttons {
             EffectDuration = 5f;
             HasEffectDuration = true;
             Roles = ThanosRoles.Instance;
-            SetSprite("ThanosHarion.Resources.snap.png", 450);
+            SetSprite(ResourceLoader.SnapSprite);
             Key = ThanosRoles.KeyBindSnap.Key;
-            PositionOffset = new UnityEngine.Vector2(0.5f, 3f);
+            PositionOffset = new Vector2(0.5f, 3f);
 
         }
 
@@ -38,7 +38,7 @@ namespace ThanosHarion.Core.Buttons {
             if (SnapUsed && DestroyableSingleton<HudManager>.Instance.FullScreen.color.a >= 1)
                 SnapEnd();
 
-            if (!MindButton.Instance.HasStone || !PowerButton.Instance.HasStone || !SpaceButton.Instance.HasStone || !SoulButton.Instance.HasStone || !TimeButton.Instance.HasStone || !RealityButton.Instance.HasStone)
+            if (StoneInformation.StonesData.Any(stone => !stone.HasStone && stone.IsActive))
                 CanUse = false;
         }
 

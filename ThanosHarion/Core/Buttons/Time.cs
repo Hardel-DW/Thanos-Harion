@@ -7,14 +7,12 @@ namespace ThanosHarion.Core.Buttons {
     [RegisterCooldownButton]
     public class TimeButton : CustomButton<TimeButton> {
 
-        public bool HasStone = false;
-
         public override void OnCreateButton() {
             Timer = ThanosRoles.CooldownTimeStone.GetValue();
             Roles = ThanosRoles.Instance;
             EffectDuration = ThanosRoles.DurationTimeStone.GetValue() / 2;
             HasEffectDuration = true;
-            SetSprite("ThanosHarion.Resources.time.png", 300);
+            SetSprite(ResourceLoader.TimeStoneSprite);
             Key = ThanosRoles.KeyBindTime.Key;
             PositionOffset = new UnityEngine.Vector2(0f, 2f);
         }
@@ -30,7 +28,8 @@ namespace ThanosHarion.Core.Buttons {
             else
                 TimeCore.Record();
 
-            if (!HasStone)
+            StoneInformation TimeStone = StoneInformation.GetStoneData(StoneData.Time);
+            if (!TimeStone.HasStone && TimeStone.IsActive)
                 CanUse = false;
         }
     }

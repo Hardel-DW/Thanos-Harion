@@ -1,7 +1,10 @@
 ﻿namespace ThanosHarion {
     public enum CustomRPC {
-        TimeRewind = 51,
-        TimeRevive = 52,
-        Snap = 53
+        TimeRewind = 61,
+        TimeRevive = 62,
+        Snap = 63,
+        SyncroStone,
+        SyncroDestroy,
+        SyncroEnableDisable
     }
 }
