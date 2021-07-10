@@ -8,7 +8,7 @@ using ThanosRoles = ThanosHarion.Core.Roles.Thanos;
 namespace ThanosHarion.Core.Buttons {
     [RegisterCooldownButton]
     public class SnapButton : CustomButton<SnapButton> {
-        private bool SnapUsed = false;
+        internal bool SnapUsed = false;
 
         public override void OnCreateButton() {
             Timer = 30f;

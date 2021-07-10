@@ -1,9 +1,11 @@
 ﻿using Harion.Utility;
+using Harion.Utility.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using ThanosRole = ThanosHarion.Core.Roles.Thanos;
 
 namespace ThanosHarion.Core {
     public class StoneInformation {
@@ -18,7 +20,6 @@ namespace ThanosHarion.Core {
         };
 
         public readonly StoneData StoneType;
-        public readonly StoneVisibility StoneVisibilty;
         public readonly StonePickup StonePickuBy;
         public readonly string Name;
         public readonly Sprite Texture;
@@ -54,6 +55,7 @@ namespace ThanosHarion.Core {
 
             PickupObject Pickup = Stone.AddComponent<PickupObject>();
             Pickup.OnPickup = OnPickup;
+            Pickup.PlayersCanPickup = GetListPickupPlayer();
 
             SyncroStone Syncro = Stone.AddComponent<SyncroStone>();
             Syncro.ObjectId = StoneType;
@@ -66,6 +68,13 @@ namespace ThanosHarion.Core {
             return Stone;
         }
         
+        private List<PlayerControl> GetListPickupPlayer() => StonePickuBy switch {
+            StonePickup.Everyone => PlayerControl.AllPlayerControls.ToArray().ToList(),
+            StonePickup.Thanos => ThanosRole.Instance.AllPlayers,
+            StonePickup.Crewmate => PlayerControlUtils.GetCrewmate(),
+            _ => null
+        };
+
         public static StoneInformation GetStoneData(StoneData Data) => StonesData.FirstOrDefault(stone => stone.StoneType == Data);
 
         public static void ReadSyncroData(StoneData data, Vector3 Position, int OwnerId) {

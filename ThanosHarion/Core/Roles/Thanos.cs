@@ -98,6 +98,7 @@ namespace ThanosHarion.Core.Roles {
 
         public override void OnGameEnded() {
             TimeCore.ClearGameHistory();
+            SnapButton.Instance.SnapUsed = false;
         }
 
         private void GameOptionFormat() {
