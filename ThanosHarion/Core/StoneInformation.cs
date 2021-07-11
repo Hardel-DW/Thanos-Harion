@@ -1,8 +1,11 @@
-﻿using Harion.Utility;
+﻿using Harion.ArrowManagement;
+using Harion.CustomRoles;
+using Harion.Utility;
 using Harion.Utility.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ThanosHarion.Core.Roles;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using ThanosRole = ThanosHarion.Core.Roles.Thanos;
@@ -11,12 +14,12 @@ namespace ThanosHarion.Core {
     public class StoneInformation {
 
         public static readonly List<StoneInformation> StonesData = new() {
-            new StoneInformation(StoneData.Mind, "Mind", ResourceLoader.MindStoneSprite, StonePickup.Thanos),
-            new StoneInformation(StoneData.Power, "Power", ResourceLoader.PowerStoneSprite, StonePickup.Thanos),
-            new StoneInformation(StoneData.Reality, "Reality", ResourceLoader.RealityStoneSprite, StonePickup.Thanos),
-            new StoneInformation(StoneData.Soul, "Soul", ResourceLoader.SoulStoneSprite, StonePickup.Everyone),
-            new StoneInformation(StoneData.Space, "Space", ResourceLoader.SpaceStoneSprite, StonePickup.Thanos),
-            new StoneInformation(StoneData.Time, "Time", ResourceLoader.TimeStoneSprite, StonePickup.Thanos),
+            new StoneInformation(StoneData.Mind, "Mind", ResourceLoader.MindStoneSprite, StonePickup.Thanos, false, StoneVisibility.Nobody, MindRole.Instance, false),
+            new StoneInformation(StoneData.Power, "Power", ResourceLoader.PowerStoneSprite, StonePickup.Thanos, false, StoneVisibility.Nobody, PowerRole.Instance, false),
+            new StoneInformation(StoneData.Reality, "Reality", ResourceLoader.RealityStoneSprite, StonePickup.Thanos, false, StoneVisibility.Nobody, RealityRole.Instance, false),
+            new StoneInformation(StoneData.Soul, "Soul", ResourceLoader.SoulStoneSprite, StonePickup.Everyone, true, StoneVisibility.Crewmate, SoulRole.Instance, true),
+            new StoneInformation(StoneData.Space, "Space", ResourceLoader.SpaceStoneSprite, StonePickup.Thanos, false, StoneVisibility.Nobody, SpaceRole.Instance, false),
+            new StoneInformation(StoneData.Time, "Time", ResourceLoader.TimeStoneSprite, StonePickup.Thanos, false, StoneVisibility.Nobody, TimeRole.Instance, false),
         };
 
         public readonly StoneData StoneType;
@@ -24,6 +27,15 @@ namespace ThanosHarion.Core {
         public readonly string Name;
         public readonly Sprite Texture;
         public readonly Action<PlayerControl> OnPickup;
+        public readonly bool HasArrow;
+        public readonly RoleManager StoneRole;
+        public readonly bool EnableStoneRole;
+        private List<PlayerControl> PlayerCanSeeStone = new();
+        private List<PlayerControl> PlayerCanSeeArrow = new();
+
+        public ArrowManager Arrow { get; private set; }
+
+        public StoneVisibility ArrowVisibleBy { get; set; }
 
         public GameObject StoneObject { get; set; } = null;
 
@@ -33,15 +45,35 @@ namespace ThanosHarion.Core {
 
         public bool HasStone { get; set; } = false;
 
-        public StoneInformation(StoneData stoneType, string name, Sprite texture, StonePickup stonePickuBy) {
+        public StoneInformation(StoneData stoneType, string name, Sprite texture, StonePickup stonePickuBy, bool hasArrow, StoneVisibility arrowVisibleBy, RoleManager role, bool enableRole) {
             StoneType = stoneType;
             Name = name;
             Texture = texture;
             StonePickuBy = stonePickuBy;
-            OnPickup = (PlayerControl Player) => HasStone = true;
+            HasArrow = hasArrow;
+            ArrowVisibleBy = arrowVisibleBy;
+            StoneRole = role;
+            EnableStoneRole = enableRole;
+            OnPickup = (PlayerControl Player) => OnPickupAction(Player);
         }
 
-        public GameObject CreateStone(int OwnerId, Vector2? Position = null) {    
+        private void OnPickupAction(PlayerControl Player) {
+            if (Player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                return;
+
+            HasStone = true;
+            Object.Destroy(Arrow.Arrow);
+            Arrow = null;
+            ThanosRole.Instance.Stones.Remove(StoneType);
+
+            if (EnableStoneRole)
+                StoneRole.RpcAddPlayer(Player);
+        }
+
+        public GameObject CreateStone(int OwnerId, Vector2? Position = null) {
+            PlayerCanSeeStone = GetListVisibility();
+            PlayerCanSeeArrow = GetListArrowVisibility();
+
             Position ??= new Vector2(100f, 100f);
 
             GameObject Stone = new GameObject();
@@ -52,6 +84,7 @@ namespace ThanosHarion.Core {
 
             SpriteRenderer renderer = Stone.AddComponent<SpriteRenderer>();
             renderer.sprite = Texture;
+            renderer.enabled = PlayerCanSeeStone.ContainsPlayer(PlayerControl.LocalPlayer);
 
             PickupObject Pickup = Stone.AddComponent<PickupObject>();
             Pickup.OnPickup = OnPickup;
@@ -65,28 +98,51 @@ namespace ThanosHarion.Core {
             collider.size = new Vector2(1f, 1f);
             collider.isTrigger = true;
 
-            return Stone;
+            StoneObject = Stone;
+            Arrow = new ArrowManager(StoneObject, true, 0f);
+            Arrow.Renderer.enabled = (PlayerCanSeeArrow.ContainsPlayer(PlayerControl.LocalPlayer) && HasArrow);
+            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay)
+                Arrow.Renderer.enabled = true;
+
+            return StoneObject;
         }
         
         private List<PlayerControl> GetListPickupPlayer() => StonePickuBy switch {
             StonePickup.Everyone => PlayerControl.AllPlayerControls.ToArray().ToList(),
             StonePickup.Thanos => ThanosRole.Instance.AllPlayers,
             StonePickup.Crewmate => PlayerControlUtils.GetCrewmate(),
-            _ => null
+            _ => new()
+        };
+
+        private List<PlayerControl> GetListVisibility() => Visibility switch {
+            StoneVisibility.Everyone => PlayerControl.AllPlayerControls.ToArray().ToList(),
+            StoneVisibility.Crewmate => PlayerControlUtils.GetCrewmate(),
+            StoneVisibility.Thanos => ThanosRole.Instance.AllPlayers,
+            _ => new()
+        };
+
+        private List<PlayerControl> GetListArrowVisibility() => ArrowVisibleBy switch {
+            StoneVisibility.Everyone => PlayerControl.AllPlayerControls.ToArray().ToList(),
+            StoneVisibility.Crewmate => PlayerControlUtils.GetCrewmate(),
+            StoneVisibility.Thanos => ThanosRole.Instance.AllPlayers,
+            _ => new()
         };
 
         public static StoneInformation GetStoneData(StoneData Data) => StonesData.FirstOrDefault(stone => stone.StoneType == Data);
 
         public static void ReadSyncroData(StoneData data, Vector3 Position, int OwnerId) {
             StoneInformation StoneInfo = GetStoneData(data);
-            StoneInfo.StoneObject = StoneInfo.CreateStone(OwnerId, Position);
+            StoneInfo.CreateStone(OwnerId, Position);
         }
 
         public static void ReadDestroyData(StoneData data) {
             StoneInformation StoneInfo = GetStoneData(data);
 
-            if (StoneInfo.StoneObject != null)
+            if (StoneInfo.StoneObject != null) {
                 Object.Destroy(StoneInfo.StoneObject);
+                Object.Destroy(StoneInfo.Arrow.Arrow);
+                StoneInfo.Arrow = null;
+            }
         }
     }
 
@@ -101,8 +157,8 @@ namespace ThanosHarion.Core {
 
     public enum StoneVisibility {
         Everyone,
-        Thanos,
         Crewmate,
+        Thanos,
         Nobody
     }
 

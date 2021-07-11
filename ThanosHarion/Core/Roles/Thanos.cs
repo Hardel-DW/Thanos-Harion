@@ -14,8 +14,9 @@ namespace ThanosHarion.Core.Roles {
     [RegisterInCustomRoles(typeof(Thanos))]
     public partial class Thanos : CustomRole<Thanos> {
         // Color: #BD00AFFF
-        public static CustomNumberOption ThanosPercent = CustomOption.AddNumber("Thanos", "<color=#BD00AFFF>Thanos Apparition</color>", 0f, 0f, 100f, 5f, GenericGameOption.ThanosHolder);
+        private static string[] VisibilityString = new string[] { "Everyone", "Crewmate", "Thanos", "Nobody" };
         public static CustomNumberOption NumberThanos = CustomOption.AddNumber("Number Thanos", 1f, 1f, 10f, 1f, GenericGameOption.ThanosHolder);
+        public static CustomNumberOption ThanosPercent = CustomOption.AddNumber("Thanos", "<color=#BD00AFFF>Thanos Apparition</color>", 0f, 0f, 100f, 5f, GenericGameOption.ThanosHolder);
 
         public static CustomNumberOption CooldownTimeStone = CustomOption.AddNumber("Cooldown Time Stone", 10f, 10f, 60f, 2.5f, GenericGameOption.TimeStoneHolder);
         public static CustomNumberOption CooldownRealityStone = CustomOption.AddNumber("Cooldown Reality Stone", 10f, 10f, 60f, 2.5f, GenericGameOption.RealityStoneHolder);
@@ -23,14 +24,14 @@ namespace ThanosHarion.Core.Roles {
         public static CustomNumberOption CooldownMindStone = CustomOption.AddNumber("Cooldown Mind Stone", 10f, 10f, 60f, 2.5f, GenericGameOption.MindStoneHolder);
         public static CustomNumberOption CooldownSoulStone = CustomOption.AddNumber("Cooldown Soul Stone", 10f, 10f, 60f, 2.5f, GenericGameOption.SoulStoneHolder);
         public static CustomNumberOption CooldownPowerStone = CustomOption.AddNumber("Cooldown Power Stone", 10f, 10f, 60f, 2.5f, GenericGameOption.PowerStoneHolder);
-/*
-        public static CustomStringOption VisibilityTimeStone = CustomOption.AddString("Visibility Time Stone", GenericGameOption.TimeStoneHolder, Visibility);
-        public static CustomStringOption VisibilityRealityStone = CustomOption.AddString("Visibility Reality Stone", GenericGameOption.RealityStoneHolder, Visibility);
-        public static CustomStringOption VisibilitySpaceStone = CustomOption.AddString("Visibility Space Stone", GenericGameOption.SpaceStoneHolder, Visibility);
-        public static CustomStringOption VisibilityMindStone = CustomOption.AddString("Visibility Mind Stone", GenericGameOption.MindStoneHolder, Visibility);
-        public static CustomStringOption VisibilitySoulStone = CustomOption.AddString("Visibility Soul Stone", GenericGameOption.SoulStoneHolder, Visibility);
-        public static CustomStringOption VisibilityPowerStone = CustomOption.AddString("Visibility Power Stone", GenericGameOption.PowerStoneHolder, Visibility);
-*/
+
+        public static CustomStringOption VisibilityTimeStone = CustomOption.AddString("Visibility Time Stone", GenericGameOption.TimeStoneHolder, VisibilityString);
+        public static CustomStringOption VisibilityRealityStone = CustomOption.AddString("Visibility Reality Stone", GenericGameOption.RealityStoneHolder, VisibilityString);
+        public static CustomStringOption VisibilitySpaceStone = CustomOption.AddString("Visibility Space Stone", GenericGameOption.SpaceStoneHolder, VisibilityString);
+        public static CustomStringOption VisibilityMindStone = CustomOption.AddString("Visibility Mind Stone", GenericGameOption.MindStoneHolder, VisibilityString);
+        public static CustomStringOption VisibilitySoulStone = CustomOption.AddString("Visibility Soul Stone", GenericGameOption.SoulStoneHolder, VisibilityString);
+        public static CustomStringOption VisibilityPowerStone = CustomOption.AddString("Visibility Power Stone", GenericGameOption.PowerStoneHolder, VisibilityString);
+
         public static CustomNumberOption DurationTimeStone = CustomOption.AddNumber("Duration Time Stone", 5f, 2.5f, 30f, 2.5f, GenericGameOption.TimeStoneHolder);
         public static CustomNumberOption DurationRealityStone = CustomOption.AddNumber("Duration Reality Stone", 5f, 5f, 60f, 2.5f, GenericGameOption.RealityStoneHolder);
         public static CustomNumberOption DurationMindStone = CustomOption.AddNumber("Duration Mind Stone", 5f, 5f, 60f, 2.5f, GenericGameOption.MindStoneHolder);
@@ -46,7 +47,6 @@ namespace ThanosHarion.Core.Roles {
         public static CustomKeyBind KeyBindMind = CustomKeyBind.AddCustomKeyBind(KeyCode.Alpha5, "Mind", "Thanos");
         public static CustomKeyBind KeyBindSoul = CustomKeyBind.AddCustomKeyBind(KeyCode.Alpha6, "Soul", "Thanos");
         public static CustomKeyBind KeyBindSnap = CustomKeyBind.AddCustomKeyBind(KeyCode.Alpha7, "Snap", "Thanos");
-        //private static string[] Visibility = new string[] { "Everyone", "Crewmate", "Impostor", "NoBody" };
 
         public override List<Ability> Abilities { get; set; } = new List<Ability>() {
             new VentAbility() { CanVent = true }
@@ -86,6 +86,13 @@ namespace ThanosHarion.Core.Roles {
 
             RealityButton.Instance.MaxTimer = CooldownRealityStone.GetValue();
             RealityButton.Instance.EffectDuration = DurationRealityStone.GetValue();
+
+            StoneInformation.GetStoneData(StoneData.Mind).Visibility = (StoneVisibility) VisibilityMindStone.GetValue();
+            StoneInformation.GetStoneData(StoneData.Power).Visibility = (StoneVisibility) VisibilityPowerStone.GetValue();
+            StoneInformation.GetStoneData(StoneData.Reality).Visibility = (StoneVisibility) VisibilityRealityStone.GetValue();
+            StoneInformation.GetStoneData(StoneData.Soul).Visibility = (StoneVisibility) VisibilitySoulStone.GetValue();
+            StoneInformation.GetStoneData(StoneData.Space).Visibility = (StoneVisibility) VisibilitySpaceStone.GetValue();
+            StoneInformation.GetStoneData(StoneData.Time).Visibility = (StoneVisibility) VisibilityTimeStone.GetValue();
 
             ResetStonePoessession();
             if (AmongUsClient.Instance.AmHost)

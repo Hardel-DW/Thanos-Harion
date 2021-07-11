@@ -10,14 +10,19 @@ namespace ThanosHarion.Core.Buttons {
         public override void OnCreateButton() {
             Timer = ThanosRoles.CooldownTimeStone.GetValue();
             Roles = ThanosRoles.Instance;
+            UseNumber = 4;
             EffectDuration = ThanosRoles.DurationTimeStone.GetValue() / 2;
             HasEffectDuration = true;
             SetSprite(ResourceLoader.TimeStoneSprite);
-            Key = ThanosRoles.KeyBindTime.Key;
             PositionOffset = new UnityEngine.Vector2(0f, 2f);
+            CustomKeyBind = () => ThanosRoles.KeyBindTime.Key;
         }
 
-        public override void OnClick() => TimeCore.StartRewind();
+        public override void OnClick() { 
+            TimeCore.StartRewind();
+            if (UseNumber == 0)
+                UseNumber = int.MaxValue;
+        }
 
         public override void OnEffectEnd() => TimeCore.StopRewind();
 
@@ -31,6 +36,8 @@ namespace ThanosHarion.Core.Buttons {
             StoneInformation TimeStone = StoneInformation.GetStoneData(StoneData.Time);
             if (!TimeStone.HasStone && TimeStone.IsActive)
                 CanUse = false;
+
+            IsDisable = UseNumber == int.MaxValue;
         }
     }
 }

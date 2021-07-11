@@ -10,14 +10,13 @@ namespace ThanosHarion.Core.Buttons {
             MaxTimer = 1f;
             Roles = ThanosRoles.Instance;
             SetSprite(ResourceLoader.SoulStoneSprite);
-            Key = ThanosRoles.KeyBindSoul.Key;
             PositionOffset = new UnityEngine.Vector2(0f, 0f);
+            CustomKeyBind = () => ThanosRoles.KeyBindSoul.Key;
         }
 
         public override void OnUpdate() {
             StoneInformation SoulStone = StoneInformation.GetStoneData(StoneData.Soul);
-            if (!SoulStone.HasStone && SoulStone.IsActive)
-                CanUse = false;
+            CanUse = !SoulStone.HasStone && SoulStone.IsActive;
         }
     }
 }

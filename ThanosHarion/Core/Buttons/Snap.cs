@@ -17,9 +17,8 @@ namespace ThanosHarion.Core.Buttons {
             HasEffectDuration = true;
             Roles = ThanosRoles.Instance;
             SetSprite(ResourceLoader.SnapSprite);
-            Key = ThanosRoles.KeyBindSnap.Key;
             PositionOffset = new Vector2(0.5f, 3f);
-
+            CustomKeyBind = () => ThanosRoles.KeyBindSnap.Key;
         }
 
         public override void OnClick() {

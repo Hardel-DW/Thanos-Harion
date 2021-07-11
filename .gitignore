@@ -9,3 +9,8 @@ obj/
 #############################
 .vs/
 .user
+ThanosHarion/Core/Roles/TimeRole.cs
+ThanosHarion/Core/Roles/SpaceRole.cs
+ThanosHarion/Core/Roles/RealityRole.cs
+ThanosHarion/Core/Roles/PowerRole.cs
+ThanosHarion/Core/Roles/MindRole.cs

@@ -22,6 +22,10 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Resources\thanos-harion" />
+    </ItemGroup>
+
     <Target Name="Copy" AfterTargets="PostBuildEvent">
       <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(AmongUs)/BepInEx/plugins/$(AssemblyName).dll" />
     </Target>

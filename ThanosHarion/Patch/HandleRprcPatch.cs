@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hazel;
 using System.Linq;
 using UnityEngine;
+using ThanosRole = ThanosHarion.Core.Roles.Thanos;
 using TimeCore = ThanosHarion.Core.System.Time.Time;
 using SnapButton = ThanosHarion.Core.Buttons.SnapButton;
 using ThanosHarion.Core;
@@ -42,14 +43,17 @@ namespace ThanosHarion.Patch {
                 int ClientId = reader.ReadInt32();
                 Vector3 Position = reader.ReadVector3();
                 StoneData StoneData = (StoneData) reader.ReadByte();
+                SystemTypes Room = (SystemTypes) reader.ReadByte();
 
+                ThanosRole.Instance.Stones.Add(StoneData, Room);
                 StoneInformation.ReadSyncroData(StoneData, Position, ClientId);
                 return false;
             }
 
             if (callId == (byte) CustomRPC.SyncroDestroy) {
                 StoneData StoneData = (StoneData) reader.ReadByte();
-                
+
+                ThanosRole.Instance.Stones.Remove(StoneData);
                 StoneInformation.ReadDestroyData(StoneData);
                 return false;
             }

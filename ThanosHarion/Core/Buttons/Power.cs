@@ -12,8 +12,8 @@ namespace ThanosHarion.Core.Buttons {
             MaxTimer = ThanosRoles.CooldownPowerStone.GetValue();
             Roles = ThanosRoles.Instance;
             SetSprite(ResourceLoader.PowerStoneSprite);
-            Key = ThanosRoles.KeyBindPower.Key;
             PositionOffset = new UnityEngine.Vector2(1f, 1f);
+            CustomKeyBind = () => ThanosRoles.KeyBindPower.Key;
         }
 
         public override void OnUpdate() {

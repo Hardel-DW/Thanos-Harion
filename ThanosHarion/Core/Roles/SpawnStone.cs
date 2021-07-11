@@ -7,32 +7,36 @@ using Hazel;
 namespace ThanosHarion.Core.Roles {
     public partial class Thanos {
 
-        public Dictionary<GameObject, SystemTypes> Stones { get; set; } = new();
+        public Dictionary<StoneData, SystemTypes> Stones { get; set; } = new();
 
-        public void InitStone() {
-            Stones = new();
+        private void InitStone() {
             foreach (StoneInformation StoneData in StoneInformation.StonesData) {
                 if (!StoneData.IsActive)
                     continue;
 
                 GameObject StoneObject = StoneData.CreateStone(AmongUsClient.Instance.ClientId);
-                StoneData.StoneObject = SetRandomPosition(StoneObject);
-                SendStone(StoneObject, StoneData);
+                PositionData PositionData = SetRandomPosition(StoneObject, StoneData.StoneType);
+                SendStone(StoneObject, StoneData, PositionData);
             }
         }
 
-        private void ResetStonePoessession() => StoneInformation.StonesData.ForEach(stone => stone.HasStone = false);
+        private void ResetStonePoessession() {
+            Stones = new();
+            StoneInformation.StonesData.ForEach(stone => stone.HasStone = false);
+        }
 
-        private void SendStone(GameObject StoneObject, StoneInformation Data) {
+        internal void SendStone(GameObject StoneObject, StoneInformation Data, PositionData PositionData) {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte) CustomRPC.SyncroStone, SendOption.None, -1);
             writer.Write(AmongUsClient.Instance.ClientId);
             writer.WriteVector3(StoneObject.transform.localPosition);
             writer.Write((byte) Data.StoneType);
+            writer.Write((byte) PositionData.room);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
 
-        private GameObject SetRandomPosition(GameObject Stone) {
+        internal PositionData SetRandomPosition(GameObject Stone, StoneData stoneType) {
             bool CorrectPositon = false;
+            PositionData Room = null;
 
             do {
                 List<PlainShipRoom> Rooms = ShipStatus.Instance.AllRooms.ToList().Where(value => !Stones.Values.Any(room => room == value.RoomId)).ToList();
@@ -45,10 +49,11 @@ namespace ThanosHarion.Core.Roles {
 
                 CorrectPositon = true;
                 Stone.transform.localPosition = new Vector3(Position.position.x, Position.position.y);
-                Stones.Add(Stone, Position.room);
+                Stones.Add(stoneType, Position.room);
+                Room = Position;
             } while (!CorrectPositon);
 
-            return Stone;
+            return Room;
         }
     }
 }
