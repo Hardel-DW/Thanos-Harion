@@ -16,7 +16,7 @@ namespace ThanosHarion.Core.Buttons {
 
         public override void OnUpdate() {
             StoneInformation SoulStone = StoneInformation.GetStoneData(StoneData.Soul);
-            CanUse = !SoulStone.HasStone && SoulStone.IsActive;
+            CanUse = SoulStone.HasStone && SoulStone.IsActive;
         }
     }
 }

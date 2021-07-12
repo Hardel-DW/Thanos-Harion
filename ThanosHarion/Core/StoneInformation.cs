@@ -100,9 +100,9 @@ namespace ThanosHarion.Core {
 
             StoneObject = Stone;
             Arrow = new ArrowManager(StoneObject, true, 0f);
-            Arrow.Renderer.enabled = (PlayerCanSeeArrow.ContainsPlayer(PlayerControl.LocalPlayer) && HasArrow);
+            Arrow.Arrow.SetActive(PlayerCanSeeArrow.ContainsPlayer(PlayerControl.LocalPlayer) && HasArrow);
             if (AmongUsClient.Instance.GameMode == GameModes.FreePlay)
-                Arrow.Renderer.enabled = true;
+                Arrow.Arrow.SetActive(true);
 
             return StoneObject;
         }
