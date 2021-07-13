@@ -55,8 +55,8 @@ namespace ThanosHarion.Core.Roles {
         public Thanos() : base() {
             GameOptionFormat();
             RoleActive = true;
-            Side = PlayerSide.Impostor;
-            RoleType = RoleType.Impostor;
+            TeamFolder = FreeplayFolder.Impostor;
+            Team = Team.Impostor;
             GiveRoleAt = Moment.StartGame;
             GiveTasksAt = Moment.StartGame;
             Color = new Color(0.741f, 0f, 0.686f, 1f);
@@ -87,16 +87,18 @@ namespace ThanosHarion.Core.Roles {
             RealityButton.Instance.MaxTimer = CooldownRealityStone.GetValue();
             RealityButton.Instance.EffectDuration = DurationRealityStone.GetValue();
 
+            ResetStonePoessession();
+            if (AmongUsClient.Instance.AmHost)
+                InitStone();
+        }
+
+        public override void OnInfectedEnd() {
             StoneInformation.GetStoneData(StoneData.Mind).Visibility = (StoneVisibility) VisibilityMindStone.GetValue();
             StoneInformation.GetStoneData(StoneData.Power).Visibility = (StoneVisibility) VisibilityPowerStone.GetValue();
             StoneInformation.GetStoneData(StoneData.Reality).Visibility = (StoneVisibility) VisibilityRealityStone.GetValue();
             StoneInformation.GetStoneData(StoneData.Soul).Visibility = (StoneVisibility) VisibilitySoulStone.GetValue();
             StoneInformation.GetStoneData(StoneData.Space).Visibility = (StoneVisibility) VisibilitySpaceStone.GetValue();
             StoneInformation.GetStoneData(StoneData.Time).Visibility = (StoneVisibility) VisibilityTimeStone.GetValue();
-
-            ResetStonePoessession();
-            if (AmongUsClient.Instance.AmHost)
-                InitStone();
         }
 
         public override void OnMeetingStart(MeetingHud instance) {

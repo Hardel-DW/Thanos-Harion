@@ -15,23 +15,19 @@ namespace ThanosHarion.Core.Buttons {
             UseNumber = 4;
             Roles = ThanosRoles.Instance;
             SetSprite(ResourceLoader.SpaceStoneSprite);
-            DecreamteUseNimber = UseNumberDecremantion.OnClick;
+            DecreamteUseNumber = UseNumberDecremantion.OnClick;
             PositionOffset = new Vector2(0f, 1f);
             CustomKeyBind = () => ThanosRoles.KeyBindSpace.Key;
         }
 
         public override void OnClick() {
             SendRpc();
-            if (UseNumber == 0)
-                UseNumber = int.MaxValue;
         }
 
         public override void OnUpdate() {
             StoneInformation SpaceStone = StoneInformation.GetStoneData(StoneData.Space);
             if (!SpaceStone.HasStone && SpaceStone.IsActive)
                 CanUse = false;
-            
-            IsDisable = UseNumber == int.MaxValue;
         }
 
         public override void SendData(MessageWriter messageWriter) {

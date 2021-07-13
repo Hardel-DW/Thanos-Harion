@@ -41,7 +41,16 @@ namespace ThanosHarion.Core {
 
         public bool IsActive { get; set; } = true;
 
-        public StoneVisibility Visibility { get; set; }
+        private StoneVisibility _Visibility;
+
+        public StoneVisibility Visibility { 
+            get => _Visibility;
+            set {
+                _Visibility = value;
+                PlayerCanSeeStone = GetListVisibility();
+                StoneObject.GetComponent<SpriteRenderer>().enabled = PlayerCanSeeStone.ContainsPlayer(PlayerControl.LocalPlayer);
+            }
+        }
 
         public bool HasStone { get; set; } = false;
 
