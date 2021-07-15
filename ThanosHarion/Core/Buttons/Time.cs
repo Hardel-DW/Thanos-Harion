@@ -20,9 +20,7 @@ namespace ThanosHarion.Core.Buttons {
             DecreamteUseNumber = UseNumberDecremantion.OnClick;
         }
 
-        public override void OnClick() { 
-            TimeCore.StartRewind();
-        }
+        public override void OnClick() => TimeCore.StartRewind();
 
         public override void OnEffectEnd() => TimeCore.StopRewind();
 

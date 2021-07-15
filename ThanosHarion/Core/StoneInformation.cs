@@ -48,7 +48,9 @@ namespace ThanosHarion.Core {
             set {
                 _Visibility = value;
                 PlayerCanSeeStone = GetListVisibility();
-                StoneObject.GetComponent<SpriteRenderer>().enabled = PlayerCanSeeStone.ContainsPlayer(PlayerControl.LocalPlayer);
+
+                if (StoneObject != null)
+                    StoneObject.GetComponent<SpriteRenderer>().enabled = PlayerCanSeeStone.ContainsPlayer(PlayerControl.LocalPlayer);
             }
         }
 
@@ -70,6 +72,8 @@ namespace ThanosHarion.Core {
             if (Player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                 return;
 
+            SoundManager.Instance.PlaySound(ResourceLoader.PickupGemAudio, false, 100f);
+            SpriteAnimUtils.StartAnimation(ResourceLoader.PickupGemAnimation, StoneObject.transform.localPosition, 1f, 0.5f);
             HasStone = true;
             Object.Destroy(Arrow.Arrow);
             Arrow = null;
@@ -146,10 +150,22 @@ namespace ThanosHarion.Core {
 
         public static void ReadDestroyData(StoneData data) {
             StoneInformation StoneInfo = GetStoneData(data);
+            if (StoneInfo == null)
+                return;
+
+            if (ThanosRole.Instance.Stones.ContainsKey(data)) {
+                ThanosRole.Instance.Stones.Remove(data);
+            }
 
             if (StoneInfo.StoneObject != null) {
                 Object.Destroy(StoneInfo.StoneObject);
+            }
+
+            if (StoneInfo.Arrow != null) {
                 Object.Destroy(StoneInfo.Arrow.Arrow);
+            }
+
+            if (StoneInfo.Arrow != null) {
                 StoneInfo.Arrow = null;
             }
         }

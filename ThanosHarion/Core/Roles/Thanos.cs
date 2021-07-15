@@ -99,7 +99,7 @@ namespace ThanosHarion.Core.Roles {
             StoneInformation.GetStoneData(StoneData.Soul).Visibility = (StoneVisibility) VisibilitySoulStone.GetValue();
             StoneInformation.GetStoneData(StoneData.Space).Visibility = (StoneVisibility) VisibilitySpaceStone.GetValue();
             StoneInformation.GetStoneData(StoneData.Time).Visibility = (StoneVisibility) VisibilityTimeStone.GetValue();
-        }
+        }   
 
         public override void OnMeetingStart(MeetingHud instance) {
             TimeCore.StopRewind();

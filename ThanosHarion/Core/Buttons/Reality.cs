@@ -24,6 +24,6 @@ namespace ThanosHarion.Core.Buttons {
                 CanUse = false;
         }
 
-        public override void OnClick() => Invisbility.LaunchInvisibility(PlayerControl.LocalPlayer, ThanosRoles.DurationRealityStone.GetValue(), PlayerControlUtils.GetImpostors());
+        public override void OnClick() => Invisbility.RpcLaunchInvisibility(PlayerControl.LocalPlayer, ThanosRoles.DurationRealityStone.GetValue(), PlayerControlUtils.GetImpostors());
     }
 }

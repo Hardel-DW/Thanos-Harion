@@ -17,6 +17,8 @@ namespace ThanosHarion.Core.Buttons {
             SetSprite(ResourceLoader.MindStoneSprite);
             PositionOffset = new UnityEngine.Vector2(1f, 2f);
             CustomKeyBind = () => ThanosRoles.KeyBindMind.Key;
+
+
         }
 
         public override void OnClick() {

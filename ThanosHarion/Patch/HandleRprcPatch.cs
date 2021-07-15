@@ -53,7 +53,6 @@ namespace ThanosHarion.Patch {
             if (callId == (byte) CustomRPC.SyncroDestroy) {
                 StoneData StoneData = (StoneData) reader.ReadByte();
 
-                ThanosRole.Instance.Stones.Remove(StoneData);
                 StoneInformation.ReadDestroyData(StoneData);
                 return false;
             }

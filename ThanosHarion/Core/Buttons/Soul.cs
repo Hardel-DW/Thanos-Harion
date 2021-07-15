@@ -1,4 +1,5 @@
 ﻿using Harion.Cooldown;
+using Harion.Utility.Utils;
 using ThanosRoles = ThanosHarion.Core.Roles.Thanos;
 
 namespace ThanosHarion.Core.Buttons {
@@ -16,7 +17,7 @@ namespace ThanosHarion.Core.Buttons {
 
         public override void OnUpdate() {
             StoneInformation SoulStone = StoneInformation.GetStoneData(StoneData.Soul);
-            CanUse = SoulStone.HasStone && SoulStone.IsActive;
+            CanUse = SoulStone.HasStone && SoulStone.IsActive && GameUtils.GameStarted;
         }
     }
 }
